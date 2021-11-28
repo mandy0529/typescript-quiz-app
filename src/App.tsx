@@ -22,9 +22,31 @@ const App = () => {
     setLoading(false);
   };
 
-  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {};
+  const checkAnswer = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!gameOver) {
+      const answer = e.currentTarget.value;
+      const correct = questions[number].correct_answer === answer;
+      if (correct) {
+        setScore((prev) => prev + 1);
+      }
+      const correctObject = {
+        question: questions[number].question,
+        answer,
+        correct,
+        correctAnswer: questions[number].correct_answer,
+      };
+      setUserAnswers((prev) => [...prev, correctObject]);
+    }
+  };
 
-  const nextQuestion = () => {};
+  const nextQuestion = () => {
+    const nextQuestion = number + 1;
+    if (nextQuestion === TOTAL_QUESTIONS) {
+      setGameOver(true);
+    } else {
+      setNumber((prev) => prev + 1);
+    }
+  };
 
   return (
     <>
@@ -32,7 +54,7 @@ const App = () => {
       {gameOver || userAnswers.length === TOTAL_QUESTIONS ? (
         <button onClick={startTrivia}>start</button>
       ) : null}
-      {!gameOver && <p>Score</p>}
+      {!gameOver && <p>Score : {score}</p>}
       {loading && <p>. . . Loading</p>}
       {!loading && !gameOver && (
         <QuestionCard
@@ -44,10 +66,9 @@ const App = () => {
           totalQuestions={TOTAL_QUESTIONS}
         />
       )}
-      {!gameOver ||
-        (!loading && userAnswers.length === number + 1 && (
-          <button onClick={nextQuestion}>next question</button>
-        ))}
+      {!gameOver && !loading && userAnswers.length === number + 1 && (
+        <button onClick={nextQuestion}>next question</button>
+      )}
     </>
   );
 };

@@ -1,10 +1,12 @@
 import React from 'react';
+import {IAnswerObject} from '../utils/api';
+import styled from 'styled-components';
 
 type Props = {
   question: string;
   answers: Array<string>;
-  callback: any;
-  userAnswer: any;
+  callback: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  userAnswer: IAnswerObject | undefined;
   questionNr: number;
   totalQuestions: number;
 };
@@ -18,7 +20,7 @@ const QuestionCard: React.FC<Props> = ({
   totalQuestions,
 }) => {
   return (
-    <div>
+    <>
       <p className="number">
         question :{questionNr}/{totalQuestions}
       </p>
@@ -26,16 +28,31 @@ const QuestionCard: React.FC<Props> = ({
       <div>
         {answers.map((answer) => {
           return (
-            <div>
-              <button disabled={userAnswer} onClick={callback}>
+            <Wrapper
+              correct={userAnswer?.correctAnswer === answer}
+              userClicked={userAnswer?.answer === answer}
+              key={answer}
+            >
+              <button disabled={!!userAnswer} value={answer} onClick={callback}>
                 <span dangerouslySetInnerHTML={{__html: answer}}></span>
               </button>
-            </div>
+            </Wrapper>
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
+
+type IButton = {
+  correct: boolean;
+  userClicked: boolean;
+};
+const Wrapper = styled.div<IButton>`
+  button {
+    background: ${({correct, userClicked}) =>
+      correct ? 'green' : !correct && userClicked ? 'red' : null};
+  }
+`;
 
 export default QuestionCard;
