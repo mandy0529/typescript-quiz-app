@@ -6,7 +6,7 @@ import {ItemType} from '../type/type';
 const Item: React.FC<ItemType> = ({item, AddToCart}) => {
   return (
     <Wrapper>
-      <img width="300" height="300" src={item.image} alt={item.title} />
+      <img src={item.image} alt={item.title} />
       <div>
         <h3>{item.title}</h3>
         <p>{item.description.slice(0, 50)}...</p>

@@ -5,11 +5,11 @@ import {useQuery} from 'react-query';
 import Drawer from '@material-ui/core/Drawer';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
-import AddShoppingCart from '@material-ui/icons/AddShoppingCart';
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Badge from '@material-ui/core/Badge';
 
 // styles
-import {Wrapper} from './styles/App.styles';
+import {StyledButton, Wrapper} from './styles/App.styles';
 import {DataType} from './type/type';
 import Item from './components/Item';
 
@@ -20,9 +20,14 @@ const getData = async (): Promise<DataType[]> => {
 };
 
 const App = () => {
+  const [cartopen, setCartOpen] = useState(false);
+  const [items, setItems] = useState<DataType[]>([]);
+
   const {data, isLoading, error} = useQuery<DataType[]>('products', getData);
 
-  const totalItem = () => {};
+  const totalItem = (items: DataType[]) => {
+    return items;
+  };
 
   const AddToCart = () => {};
 
@@ -33,6 +38,14 @@ const App = () => {
 
   return (
     <Wrapper className="App">
+      <Drawer anchor="right" open={cartopen} onClose={() => setCartOpen(false)}>
+        cart goes here
+      </Drawer>
+      <StyledButton onClick={() => setCartOpen(true)}>
+        <Badge badgeContent={totalItem(items)} color="error">
+          <AddShoppingCartIcon />
+        </Badge>
+      </StyledButton>
       <Grid container spacing={4}>
         {data &&
           data.map((item) => {
