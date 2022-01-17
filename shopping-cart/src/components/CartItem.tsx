@@ -6,7 +6,7 @@ import {CartItemType} from '../type/type';
 const CartItem: React.FC<CartItemType> = ({item, AddToCart, removeItem}) => {
   return (
     <Wrapper>
-      <div>
+      <div className="cart-item">
         <h3>{item.title}</h3>
         <div className="information">
           <p>price : ${item.price}</p>
@@ -32,7 +32,7 @@ const CartItem: React.FC<CartItemType> = ({item, AddToCart, removeItem}) => {
           </Button>
         </div>
       </div>
-      <img width="300" height="200" src={item.image} alt={item.title} />
+      <img width="100" height="100" src={item.image} alt={item.title} />
     </Wrapper>
   );
 };
