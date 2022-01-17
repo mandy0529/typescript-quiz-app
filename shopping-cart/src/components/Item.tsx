@@ -12,7 +12,7 @@ const Item: React.FC<ItemType> = ({item, AddToCart}) => {
         <p>{item.description.slice(0, 50)}...</p>
         <h3>${item.price}</h3>
       </div>
-      <Button>add to cart</Button>
+      <Button onClick={() => AddToCart(item)}>add to cart</Button>
     </Wrapper>
   );
 };
